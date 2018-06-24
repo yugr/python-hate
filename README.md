@@ -104,3 +104,8 @@ in which program may change execution environment e.g.
     ...
 ```
 Existing optimizers (e.g. pypy) have to rely on idioms and heuristics.
+
+# Infrastructure
+
+Windows and Linux use different naming convention for Python executables
+(`python` on Windows, `python2`/`python3` on Linux).
