@@ -15,6 +15,8 @@ than needed. Linter does not help much because it fails miserably
 to catch even the most basic errors (invalid string formatting,
 iterating over unsorted dicts, dead list computations).
 
+GIL precludes CPU parallelism which is suprising at the age of multicores.
+
 Lack of type annotations forces people to use hungarian notation
 in complex programs (hello 90-s!).
 
@@ -97,7 +99,7 @@ print(xxx[0])  # Prints 1
 
 # Performance
 
-It's very hard to optimize Pythion code because there are far too many ways
+It's very hard to optimize Python code because there are far too many ways
 in which program may change execution environment e.g.
 ```
   for re in regexes:
