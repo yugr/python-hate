@@ -49,6 +49,7 @@ to misuse standard APIs:
 if filter(lambda x: x == 0, [1,2]):
   print("Yes")  # Prints "Yes"!
 ```
+Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns `True`).
 
 `argparse` does not provide automatic support for `--no-XXX` flags.
 
