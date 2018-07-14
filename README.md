@@ -53,6 +53,12 @@ Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns
 
 `argparse` does not provide automatic support for `--no-XXX` flags.
 
+`split` and `join` use different order of arguments:
+```
+sep,join(lst)
+lst.split(sep)
+```
+
 # Name Resolution
 
 There is no way to localize variable withing a function.
