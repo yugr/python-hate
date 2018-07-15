@@ -33,6 +33,12 @@ It's too easy to inadertently share references:
 ```
 a = b = []
 ```
+or
+```
+def foo(x=[]):  # foo() will return [1], [1, 1], [1, 1, 1], etc.
+  x.append(1)
+  return x
+```
 
 Default return value from function when return is omitted is `None`
 (which makes it impossible to declare subroutines which are not supposed
