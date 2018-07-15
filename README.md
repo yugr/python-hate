@@ -61,7 +61,7 @@ Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns
 
 `split` and `join` use different order of arguments:
 ```
-sep,join(lst)
+sep.join(lst)
 lst.split(sep)
 ```
 
