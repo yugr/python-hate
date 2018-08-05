@@ -13,7 +13,8 @@ rarely called function the next day.
 This increases debugging time and makes refactoring more time-consuming
 than needed. Linter does not help much because it fails miserably
 to catch even the most basic errors (invalid string formatting,
-iterating over unsorted dicts, dead list computations).
+iterating over unsorted dicts, dead list computations, modifying list while iterating
+over it).
 
 GIL precludes CPU parallelism which is suprising at the age of multicores.
 
@@ -124,3 +125,6 @@ Existing optimizers (e.g. pypy) have to rely on idioms and heuristics.
 
 Windows and Linux use different naming convention for Python executables
 (`python` on Windows, `python2`/`python3` on Linux).
+
+Python debugging is super-slow (few orders of magnitude slower than
+interpretation).
