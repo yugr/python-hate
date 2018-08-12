@@ -45,6 +45,19 @@ Default return value from function when return is omitted is `None`
 (which makes it impossible to declare subroutines which are not supposed
 to return anything).
 
+Assigning a non-existent object field creates it instead of throwing exception:
+```
+class A:
+  def __init__(self):
+    self.x = 0
+...
+a = A()
+a.y = 1  # OK
+```
+This complicates refactoring because forgetting to update old field name
+deep inside your program will silently work, breaking your program in
+much later.
+
 # Standard Libraries
 
 Convention of having a pair of modifying and non-modifying accessors
