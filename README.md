@@ -54,9 +54,6 @@ And other may even be treated as virtues by some people.
 
 # Standard Libraries
 
-* Convention of having a pair of modifying and non-modifying accessors
-  (e.g. `reverse`/`reversed` or `sort`/`sorted`) is not followed for all standard APIs.
-  E.g. not for `str.replace()`.
 * Thanks to active use of list comprehensions in Python 3 it's so easy
   to misuse standard APIs:
   ```
