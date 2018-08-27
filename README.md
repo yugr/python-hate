@@ -70,7 +70,7 @@ And other may even be treated as virtues by some people.
 
 # Name Resolution
 
-* There is no way to localize variable withing a function.
+* There is no way to localize variable in a scope smaller than a function.
   This often hurts when renaming variables during code refactoring.
   Forgetting to rename variable name in a single place, causes interpreter
   to pick up an unrelated name from unrelated block 50 lines above or
@@ -88,27 +88,47 @@ And other may even be treated as virtues by some people.
 * Similarly to above, there is no control over visibility (can't hide class methods,
   can't hide module functions). You are left with a _convention_ to precede
   private functions with `_` and hope for the best.
-* Assigning to variable automatically declares it local, even if there a global definition:
+* Python scoping rules require that assigning a variable automatically declares it local.
+  This causes inconsistencies and weird limitations in practice. E.g. variable would
+  be considered local even if assignment follows first use:
   ```
+  global xxx
   xxx = 0
-  
+
+  def foo():
+    a = xxx  # Throws UnboundLocalError
+    xxx = 2
+  ```
+  and even if assignment is never ever executed:
+  ```
+  def foo():
+    a = xxx  # Still aborts...
+    if False:
+      xxx = 2
+  ```
+  For global variables this can be overcome by declaring variable name as `global`
+  before first use:
+  ```
+  def foo():
+    global xxx
+    a = xxx
+    xxx = 2
+  ```
+  But variables from non-global outer scopes there are no magic keywords so they
+  are essentially unwritable from nested scopes i.e. closures:
+  ```
   def foo():
     xxx = 1
-  
-  foo()
-  print(xxx)  # Prints 0!
+    def bar():
+      xxx = 2  # No way to modify xxx...
   ```
-  This isn't consistent with reading a variable (which will read global definition if it's present,
-  rather than throwing `NameError`). A "workaround" is to convert global variable to
-  array as this will force interpreter to prefer global definition (what?!):
+  The only available "solution" is to wrap the variable into a fake 1-element array
+  (whaat?!):
   ```
-  xxx = [0]
-  
   def foo():
-    xxx[0] = 1
-  
-  foo()
-  print(xxx[0])  # Prints 1
+    xxx = [1]
+    def bar():
+      xxx[0] = 2
   ```
 
 # Performance
