@@ -12,11 +12,14 @@ The most critical problem of Python is that it does not perform any static check
 This looks particularly funny when you run your app
 on a huge amount of data overnight, just to detect missing initialization in some
 rarely called function the next day.
-This increases debugging time and makes refactoring more time-consuming
-than needed. Linter does not help much because it fails miserably
+
+Lack of static checking increases debugging time and makes refactoring
+more time-consuming than needed.
+
+Linter does not help much because it fails miserably
 to catch even the most basic errors (invalid string formatting,
-iterating over unsorted dicts, dead list computations, modifying list while iterating
-over it).
+iterating over unsorted dicts, dead list computations,
+modifying list while iterating over it and many, many more).
 
 ## GIL
 
@@ -132,6 +135,7 @@ This often hurts when renaming variables during code refactoring.
 Forgetting to rename variable name in a single place, causes interpreter
 to pick up an unrelated name from unrelated block 50 lines above or
 from previous loop iteration.
+
 This is especially inconvenient for one-off variables (e.g. loop counters):
 ```
 for i in range(100):
