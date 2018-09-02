@@ -16,10 +16,14 @@ rarely called function the next day.
 Lack of static checking increases debugging time and makes refactoring
 more time-consuming than needed.
 
-Linter does not help much because it fails miserably
-to catch even the most basic errors (invalid string formatting,
-iterating over unsorted dicts, dead list computations,
-modifying list while iterating over it and many, many more).
+There is a Pylint but it is a linter (i.e. style checker) rather than analyzer
+so it is unable to detect many serious errors in programs
+which require dataflow analysis. In addition if fails even on simple stuff like
+* invalid string formatting
+* iterating over unsorted dicts
+* dead list computations (e.g. using `sorted(lst)` instead of `lst.sort()`)
+* modifying list while iterating over it and many
+* etc.
 
 ## GIL
 
@@ -222,3 +226,7 @@ Windows and Linux use different naming convention for Python executables
 
 Python debugging is super-slow (few orders of magnitude slower than
 interpretation).
+
+## No static analyzer
+
+Already mentioned in [Zero static checking](#zero-static-checking).
