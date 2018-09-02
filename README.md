@@ -18,11 +18,11 @@ more time-consuming than needed.
 
 There is a Pylint but it is a linter (i.e. style checker) rather than analyzer
 so it is unable to detect many serious errors in programs
-which require dataflow analysis. In addition if fails even on simple stuff like
-* invalid string formatting
-* iterating over unsorted dicts
+which require dataflow analysis. In addition if fails on simple stuff like
+* invalid string formatting (tried to fix it [here](https://github.com/PyCQA/pylint/pull/2465))
+* iterating over unsorted dicts (reported [here](https://github.com/PyCQA/pylint/issues/2467))
 * dead list computations (e.g. using `sorted(lst)` instead of `lst.sort()`)
-* modifying list while iterating over it and many
+* modifying list while iterating over it
 * etc.
 
 ## GIL
