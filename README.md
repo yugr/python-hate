@@ -208,9 +208,10 @@ def foo():
 
 # Performance
 
-## Optimization is overly hard
+## Automatic optimization is hard
 
-It's very hard to optimize Python code because there are far too many ways
+It's very hard to automatically optimize Python code
+because there are far too many ways
 in which program may change execution environment e.g.
 ```
   for re in regexes:
