@@ -122,6 +122,21 @@ Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns
 
 `argparse` does not provide automatic support for `--no-XXX` flags.
 
+## Getopt does not allow parameters after positional arguments
+
+```
+>>> opts, args = getopt.getopt(['A', '-o', 'B'], 'o:')
+>>> opts
+[]
+>>> args
+['A', '-o', 'B']
+>>> opts, args = getopt.getopt(['-o', 'B', 'A'], 'o:')
+>>> opts
+[('-o', 'B')]
+>>> args
+['A']
+```
+
 ## Split and join disagree on argument order
 
 `split` and `join` use different order of arguments:
