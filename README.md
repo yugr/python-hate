@@ -195,7 +195,23 @@ def foo():
   if False:
     xxx = 2
 ```
-For global variables this can be overcome by declaring variable name as `global`
+This is particularly puzzling in long functions when someone accidentally
+adds a local variable which matches name of a global variable used in other part
+of the same function:
+```
+def value():
+  ...
+
+def foo():
+  ...  # A lot of code
+  value(1)  # Surprise! UnboundLocalError
+  ...  # Yet more code
+  for value in data:
+    ...
+```
+
+Once you've lost some time debugging the issue, you can be overcome
+for global variables by declaring their names as `global`
 before first use:
 ```
 def foo():
@@ -203,7 +219,7 @@ def foo():
   a = xxx
   xxx = 2
 ```
-But variables from non-global outer scopes there are no magic keywords so they
+But there are no magic keywords forvariables from non-global outer scopes so they
 are essentially unwritable from nested scopes i.e. closures:
 ```
 def foo():
