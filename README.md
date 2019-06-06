@@ -50,6 +50,18 @@ Python will helpfully make it harder to find this error
 by converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
+## Problematic operator precedence
+
+`Is` and `is not` operators have the same precedence as comparisons
+so this code
+```
+op.post_modification is None != full_op.post_modification is None
+```
+would rather unexpectedly evalute as
+```
+((op.post_modification is None) != full_op.post_modification) is None
+```
+
 ## Syntax checking
 
 Syntax error reporting is extremely primitive.
