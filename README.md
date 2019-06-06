@@ -43,6 +43,13 @@ This is not a valid syntax:
 x == not y
 ```
 
+## Hiding type errors via helpful conversions
+
+It's very easy to write `len(lst1) == lst2` instead of `len(lst1) == len(lst2)`.
+Python will helpfully make it harder to find this error
+by converting first variant to `[len(lst1)] * len(lst2) == lst2`
+(instead of aborting with a type fail).
+
 ## Syntax checking
 
 Syntax error reporting is extremely primitive.
