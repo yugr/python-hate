@@ -50,6 +50,11 @@ Python will helpfully make it harder to find this error
 by converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
+## Crippled lambdas
+
+For unclear reason lambda functions support only expressions
+so anything more complicated requires a local named function.
+
 ## Problematic operator precedence
 
 `Is` and `is not` operators have the same precedence as comparisons
@@ -61,6 +66,11 @@ would rather unexpectedly evalute as
 ```
 ((op.post_modification is None) != full_op.post_modification) is None
 ```
+
+## The useless self
+
+Explicitly writing out `self` in all method declarations and calls
+should not be needed.
 
 ## Syntax checking
 
