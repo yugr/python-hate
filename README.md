@@ -134,6 +134,20 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'xxx', 'yyy'))
 Search for "python relative imports" on stackoverflow to see some really clumsy Python code
 (e.g. [here](https://stackoverflow.com/questions/279237/import-a-module-from-a-relative-path)
 or [here](https://stackoverflow.com/questions/1918539/can-anyone-explain-pythons-relative-imports)).
+Also see [When are circular imports fatal?](https://datagrok.org/python/circularimports/)
+for more weird limitations of relative imports with respect to circular dependencies.
+
+## "Is" operator does not work for integers
+
+No comments:
+```
+> 1 is 1
+True
+> 1000 is 1000
+True
+> 999+1 is 1000
+False
+```
 
 # Standard Libraries
 
