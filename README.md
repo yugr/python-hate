@@ -89,6 +89,13 @@ def foo(x=[]):  # foo() will return [1], [1, 1], [1, 1, 1], etc.
   x.append(1)
   return x
 ```
+or even
+```
+def foo(obj, lst=[]):
+  obj.lst = lst
+foo(obj)
+obj.lst.append(1)  # Hoorah, this modifies default value of foo
+```
 
 ## Function always returns
 
