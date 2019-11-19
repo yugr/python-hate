@@ -158,9 +158,9 @@ False
 
 # Standard Libraries
 
-## List comprehensions fail check for emptiness
+## List generators fail check for emptiness
 
-Thanks to active use of list comprehensions in Python 3 it's so easy
+Thanks to active use of generators in Python 3 it became easier
 to misuse standard APIs:
 ```
 if filter(lambda x: x == 0, [1,2]):
