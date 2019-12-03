@@ -148,12 +148,25 @@ for more weird limitations of relative imports with respect to circular dependen
 
 No comments:
 ```
-> 1 is 1
-True
-> 1000 is 1000
+> 2+2 is 4
 True
 > 999+1 is 1000
 False
+```
+
+This happens because [only sufficiently small integer objects are reused](https://stackoverflow.com/a/306353/2170527):
+```
+# Two different instances of number "1000"
+>>> id(999+1)
+140068481622512
+>>> id(1000)
+140068481624112
+
+# Single instance of number "4"
+>>> id(2+2)
+10968896
+>>> id(4)
+10968896
 ```
 
 # Standard Libraries
