@@ -169,6 +169,20 @@ This happens because [only sufficiently small integer objects are reused](https:
 10968896
 ```
 
+## Inconsistent index checks
+
+Invalid indexing throws an exception
+but invalid slicing does not:
+```
+>>> a=list(range(4))
+>>> a[4]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: list index out of range
+>>> a[4:10]
+[]
+```
+
 # Standard Libraries
 
 ## List generators fail check for emptiness
@@ -328,3 +342,13 @@ interpretation).
 ## No static analyzer
 
 Already mentioned in [Zero static checking](#zero-static-checking).
+
+## Unable to break on pass statement
+
+Python debugger will [ignore breakpoints set on pass statements](https://stackoverflow.com/a/47626134/2170527).
+Thus poor-man's conditional breakpoints like
+```
+if x > 0:
+  pass
+```
+will silently fail to work, leaving a false impression that condition is always false.
