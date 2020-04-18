@@ -70,7 +70,31 @@ would rather unexpectedly evalute as
 ## The useless self
 
 Explicitly writing out `self` in all method declarations and calls
-should not be needed.
+should not be needed. Apart from being an unnecessary boilerplate,
+this enables another class of bugs:
+```
+class A:
+  def first(x, *y):
+    return x
+
+a = A
+print(a.first(1,2,3))  # Will print a, not 1
+```
+
+## Inconsistency of set literals
+
+Sets can be initialized via syntax sugar:
+```
+>>> x = {1, 2, 3}
+>>> type(x)
+<class 'set'>
+```
+but it breaks for empty sets:
+```
+>>> x = {}
+>>> type(x)
+<class 'dict'>
+```
 
 ## Syntax checking
 
