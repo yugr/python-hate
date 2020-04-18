@@ -1,7 +1,7 @@
 A growing list of things I dislike about Python.
 
-There are workarounds for some of them (often half-broken and usually unintuitive).
-And other may even be treated as virtues by some people.
+There are workarounds for some of them (often half-broken and usually unintuitive)
+and others may even be considered virtues by some people.
 
 # Generic
 
@@ -9,25 +9,25 @@ And other may even be treated as virtues by some people.
 
 The most critical problem of Python is that it does not perform any static checks
 (not even missing variable definitions).
-This looks particularly funny when you run your app
-on a huge amount of data overnight, just to detect missing initialization in some
-rarely called function the next day.
-
 Lack of static checking increases debugging time and makes refactoring
 more time-consuming than needed.
+This becomes particularly obvious when you run your app on a huge amount of data overnight,
+just to detect missing initialization in some rarely called function in the morning.
 
-There is a Pylint but it is a linter (i.e. style checker) rather than analyzer
-so it is unable to detect many serious errors in programs
-which require dataflow analysis. In addition if fails on basic stuff like
+There is [Pylint](https://www.pylint.org) but it is a linter (i.e. style checker)
+rather than a real static analyzer so it is unable, by design, to detect
+many serious errors in programs which require dataflow analysis.
+For example if fails on basic stuff like
 * invalid string formatting (fixed [here](https://github.com/PyCQA/pylint/pull/2465))
 * iterating over unsorted dicts (reported [here](https://github.com/PyCQA/pylint/issues/2467) with draft patch, rejected because maintainers consider it unimportant (no particular reasons provided))
 * dead list computations (e.g. using `sorted(lst)` instead of `lst.sort()`)
 * modifying list while iterating over it (reported [here](https://github.com/PyCQA/pylint/issues/2471) with draft patch, rejected because maintainers consider it unimportant (no particular reasons provided))
 * etc.
 
-## GIL
+## Global interpreter lock
 
-GIL precludes CPU parallelism which is suprising at the age of multicores.
+[GIL](https://wiki.python.org/moin/GlobalInterpreterLock) precludes high-performant multithreading
+which is suprising at the age of multicores.
 
 ## No type annotations
 
@@ -50,14 +50,14 @@ Python will helpfully make it harder to find this error
 by converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
-## Crippled lambdas
+## Limited lambdas
 
-For unclear reason lambda functions support only expressions
+For unclear reason lambda functions only support expressions
 so anything more complicated requires a local named function.
 
 ## Problematic operator precedence
 
-`Is` and `is not` operators have the same precedence as comparisons
+The `is` and `is not` operators have the same precedence as comparisons
 so this code
 ```
 op.post_modification is None != full_op.post_modification is None
@@ -98,7 +98,7 @@ but it breaks for empty sets:
 
 ## Syntax checking
 
-Syntax error reporting is extremely primitive.
+Syntax error reporting in Python is extremely primitive.
 In most cases you simply get `SyntaxError: invalid syntax`.
 
 ## Inadvertent sharing
@@ -121,15 +121,15 @@ foo(obj)
 obj.lst.append(1)  # Hoorah, this modifies default value of foo
 ```
 
-## Function always returns
+## Functions always return
 
-Default return value from function when return is omitted is `None`.
+Default return value from function (when `return` is omitted) is `None`.
 This makes it impossible to declare subroutines which are not supposed
-to return anything.
+to return anything (and verify this at runtime).
 
 ## Automatic field insertion
 
-Assigning a non-existent object field creates it instead of throwing exception:
+Assigning a non-existent object field adds it instead of throwing an exception:
 ```
 class A:
   def __init__(self):
@@ -139,36 +139,14 @@ a = A()
 a.y = 1  # OK
 ```
 
-This complicates refactoring because forgetting to update old field name
-deep inside your program will silently work, breaking your program in
-much later.
+This complicates refactoring because forgetting to update an outdated field name
+deep inside your (or your colleague's) program will silently work,
+breaking your program much later.
 
-This can of course be overcome with `__slots__` but when have you seen them
+This can be overcome with `__slots__` but when have you seen them
 used last time?
 
-## Relative imports are unusable
-
-Relative imports (`from .xxx.yyy import mymod`) have many weird limitations
-e.g. they will not allow you to import module from parent folder and
-they will seize work in main script
-```
-ModuleNotFoundError: No module named '__main__.xxx'; '__main__' is not a package
-```
-
-A workaround is to use extremely ugly `sys.path` hackery:
-```
-import sys
-import os.path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'xxx', 'yyy'))
-```
-
-Search for "python relative imports" on stackoverflow to see some really clumsy Python code
-(e.g. [here](https://stackoverflow.com/questions/279237/import-a-module-from-a-relative-path)
-or [here](https://stackoverflow.com/questions/1918539/can-anyone-explain-pythons-relative-imports)).
-Also see [When are circular imports fatal?](https://datagrok.org/python/circularimports/)
-for more weird limitations of relative imports with respect to circular dependencies.
-
-## "Is" operator does not work for integers
+## "Is" operator does not work for primitive types
 
 No comments:
 ```
@@ -240,7 +218,7 @@ Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns
 
 ## Split and join disagree on argument order
 
-`split` and `join` use different order of arguments:
+`split` and `join` accept list and separator in different order:
 ```
 sep.join(lst)
 lst.split(sep)
@@ -337,6 +315,28 @@ def foo():
   def bar():
     xxx[0] = 2
 ```
+
+## Relative imports are unusable
+
+Relative imports (`from .xxx.yyy import mymod`) have many weird limitations
+e.g. they will not allow you to import module from parent folder and
+they will seize work in main script
+```
+ModuleNotFoundError: No module named '__main__.xxx'; '__main__' is not a package
+```
+
+A workaround is to use extremely ugly `sys.path` hackery:
+```
+import sys
+import os.path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'xxx', 'yyy'))
+```
+
+Search for "python relative imports" on stackoverflow to see some really clumsy Python code
+(e.g. [here](https://stackoverflow.com/questions/279237/import-a-module-from-a-relative-path)
+or [here](https://stackoverflow.com/questions/1918539/can-anyone-explain-pythons-relative-imports)).
+Also see [When are circular imports fatal?](https://datagrok.org/python/circularimports/)
+for more weird limitations of relative imports with respect to circular dependencies.
 
 # Performance
 
