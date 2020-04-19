@@ -195,7 +195,7 @@ to misuse standard APIs:
 if filter(lambda x: x == 0, [1,2]):
   print("Yes")  # Prints "Yes"!
 ```
-Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns `True`).
+Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns `False` as expected).
 
 ## Argparse does not support negated flags
 
