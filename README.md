@@ -56,6 +56,28 @@ Python will helpfully make it harder to find this error
 by converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
+## No tuple unpacking in lambdas
+
+It's not possible to do tuple unpacking in lambdas so instead
+of concise and readable
+```
+lst = [(1, 'Helen', None), (3, 'John', '121')]
+lst.sort(key=lambda n, name, phone: (name, phone))  # TypeError: <lambda>() missing 2 required positional arguments
+```
+you should use
+```
+lst.sort(key=lambda n_name_phone: (n_name_phone[1], n_name_phone[2]))
+```
+
+[PEP 3113](https://www.python.org/dev/peps/pep-3113/)
+tries to persuade you that this was a good design decision:
+```
+While an informal poll of the handful of Python programmers I know personally ...
+indicates a huge majority of people do not know of this feature ...
+```
+
+To make things even better, tuple unpacking does work in Python 2.
+
 ## Limited lambdas
 
 For unclear reason lambda functions only support expressions
