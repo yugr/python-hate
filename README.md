@@ -43,6 +43,12 @@ This is not a valid syntax:
 x == not y
 ```
 
+## Unable to overload logic operators
+
+It's not possible to overload `and`, `or` or `not` (which might have been handy e.g. in `Interval` class).
+There's even a [PEP](https://www.python.org/dev/peps/pep-0335/) which was rejected
+because Guido disliked particular implementation.
+
 ## Hiding type errors via helpful conversions
 
 It's very easy to write `len(lst1) == lst2` instead of `len(lst1) == len(lst2)`.
