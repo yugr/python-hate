@@ -1,7 +1,7 @@
 A growing list of things I dislike about Python.
 
 There are workarounds for some of them (often half-broken and usually unintuitive)
-and others may even be considered virtues by some people.
+and others may even be considered to be virtues by some people.
 
 # Generic
 
@@ -256,7 +256,8 @@ lst.split(sep)
 
 ## No way to localize a name
 
-There is no way to localize variable in a scope smaller than a function.
+Python lacks lexical scoping i.e. there is no way to localize variable
+in a scope smaller than a function.
 This often hurts when renaming variables during code refactoring.
 Forgetting to rename variable name in a single place, causes interpreter
 to pick up an unrelated name from unrelated block 50 lines above or
@@ -377,6 +378,7 @@ in which program may change execution environment e.g.
   for re in regexes:
     ...
 ```
+(see e.g. [this quote](https://youtu.be/2wDvzy6Hgxg?t=690) from Guido).
 Existing optimizers (e.g. pypy) have to rely on idioms and heuristics.
 
 # Infrastructure
@@ -404,3 +406,20 @@ if x > 0:
   pass
 ```
 will silently fail to work, leaving a false impression that condition is always false.
+
+## Semantic changes in Python 3
+
+Most people blame Python 3 for syntax changes which break existing code
+(e.g. making `print` a regular function) but the real problem is
+_semantic_ changes as they are much harder to detect and debug.
+Some examples
+* integer division:
+```
+print(1/2)  # Prints "0" in 2, "0.5" in 3
+```
+* checking `filter`ed list for emptyness:
+```
+if filter(lambda x: x, [0]):
+  print("X")  # Executes in 3 but not in 2
+```
+* order of keys in dictionary is random until Python 3.6
