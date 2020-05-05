@@ -213,6 +213,13 @@ IndexError: list index out of range
 []
 ```
 
+## Spurious `:`s
+
+Python got rid of spurious bracing but introduced a spurious `:` lexeme instead.
+The lexeme is not needed for parsing and it's only purpose
+[was](http://effbot.org/pyfaq/why-are-colons-required-for-the-if-while-def-class-statements.htm)
+to somehow "enhance readability".
+
 # Standard Libraries
 
 ## List generators fail check for emptiness
