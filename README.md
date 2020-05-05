@@ -31,6 +31,8 @@ which is suprising at the age of multicores.
 
 ## No type annotations
 
+_Type annotations have finally been introduced in Python 3.5. Also Google develops a type inferencer [pytype](https://github.com/google/pytype)._
+
 Lack of type annotations forces people to use hungarian notation
 in complex programs (hello 90-s!).
 
