@@ -49,10 +49,10 @@ It's not possible to overload `and`, `or` or `not` (which might have been handy 
 There's even a [PEP](https://www.python.org/dev/peps/pep-0335/) which was rejected
 because Guido disliked particular implementation.
 
-## Hiding type errors via helpful conversions
+## Hiding type errors via (un)helpful conversions
 
 It's very easy to write `len(lst1) == lst2` instead of `len(lst1) == len(lst2)`.
-Python will helpfully make it harder to find this error
+Python will (un)helpfully make it harder to find this error
 by converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
@@ -459,9 +459,12 @@ if filter(lambda x: x, [0]):
 ## Dependency hell
 
 Python community does not seem to have a strong culture of preserving API backwards compatibility
+or following [semver convention](https://semver.org/)
 (which is hinted by the fact that there are no widespread tools for checking Python package API
-compatibility). This is not surprising given that even minor versions of Python 3
+compatibility). This is not surprising given that even minor versions of Python 3 itself
 break old and popular APIs (e.g. [time.clock](https://bugs.python.org/issue31803)).
+Another likely reason is lack of good mechanisms to control what's exported from module
+(prefixing methods and objects with underscore is _not_ a good mechanism).
 
 In practice this means that it's too risky to allow differences in minor (and even patch) versions
 of dependencies.
@@ -470,4 +473,8 @@ Instead the most robust (and thus most common) solution is to fix _all_ app depe
 and run each app in a dedicated virtualenv or Docker container.
 
 Apart from complicating deployment, fixing versions also
-complicates project maintenance later on.
+complicates importing module in other applications
+(due to increased chance of conflicing dependencies)
+and upgrading dependencies later on to get bugfixes and security patches.
+
+For more details see the excellent ["Dependency hell: a library author's guide" talk](https://www.youtube.com/watch?v=OaBhcueqNqw)
