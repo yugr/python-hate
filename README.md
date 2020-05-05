@@ -56,6 +56,11 @@ Python will helpfully make it harder to find this error
 by converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
+## Limited lambdas
+
+For unclear reason lambda functions only support expressions
+so anything more complicated requires a local named function.
+
 ## No tuple unpacking in lambdas
 
 It's not possible to do tuple unpacking in lambdas so instead
@@ -77,11 +82,6 @@ indicates a huge majority of people do not know of this feature ...
 ```
 
 To make things even better, tuple unpacking does work in Python 2.
-
-## Limited lambdas
-
-For unclear reason lambda functions only support expressions
-so anything more complicated requires a local named function.
 
 ## Problematic operator precedence
 
@@ -343,6 +343,31 @@ def foo():
   xxx = [1]
   def bar():
     xxx[0] = 2
+```
+
+## Unreachable code that gets executed
+
+Normally statements that belongs to false branches are not executed.
+E.g. this code works:
+```
+if True:
+  import re
+re.search(r'1', '1')
+```
+and this one raises `NameError`:
+```
+if False:
+  import re
+re.search(r'1', '1')
+```
+This does not apply to `global` declarations though:
+```
+xxx = 1
+def foo():
+  if False:
+    global xxx
+  return xxx
+print(foo())  # Prints 1
 ```
 
 ## Relative imports are unusable
