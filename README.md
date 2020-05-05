@@ -462,9 +462,12 @@ Python community does not seem to have a strong culture of preserving API backwa
 (which is hinted by the fact that there are no widespread tools for checking Python package API
 compatibility). This is not surprising given that even minor versions of Python 3
 break old and popular APIs (e.g. [time.clock](https://bugs.python.org/issue31803)).
+
 In practice this means that it's too risky to allow differences in minor (and even patch) versions
 of dependencies.
 Instead the most robust (and thus most common) solution is to fix _all_ app dependencies
 (including the transitive ones) down to patch versions (via blind `pip freeze > requirements.txt`)
-and run each app in a dedicated virtualenv or Docker container. Apart from complicating deployment,
-fixing versions also complicates project maintenance later on.
+and run each app in a dedicated virtualenv or Docker container.
+
+Apart from complicating deployment, fixing versions also
+complicates project maintenance later on.
