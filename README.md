@@ -290,6 +290,14 @@ Similarly to above, there is no control over visibility (can't hide class method
 can't hide module functions). You are left with a _convention_ to precede
 private functions with `_` and hope for the best.
 
+## Multiple syntaxes for aliasing imported module
+
+Python allows different syntaxes for the aliasing functionality:
+```
+from mod import submod as X
+import mod.submod as X
+```
+
 ## Assignment makes variable local
 
 Python scoping rules require that assigning a variable automatically declares it local.
