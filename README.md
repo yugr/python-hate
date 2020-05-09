@@ -238,6 +238,19 @@ Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns
 
 `argparse` does not provide automatic support for `--no-XXX` flags.
 
+## Argparse has useless default formatter
+
+By default formatter used by argparse
+* won't display default option values
+* will make code examples provided via `epilog` unreadable
+  by stripping leading whitespaces
+
+Enabling both features requires defining a custom formatter:
+```
+class Formatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+  pass
+```
+
 ## Getopt does not allow parameters after positional arguments
 
 ```
