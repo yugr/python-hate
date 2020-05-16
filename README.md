@@ -111,6 +111,35 @@ a = A
 print(a.first(1,2,3))  # Will print a, not 1
 ```
 
+## Optional parent constructors
+
+Python does not require a call to parent class constructor:
+```
+class A(B):
+  def __init__(self, x):
+    super().__init__()
+    self.x = x
+```
+so when it's missing you'll have hard time understanding
+whether it's been omitted deliberately or accidentally.
+
+## Inconsistent syntax for tuples
+
+Python allows omission of parenthesis around tuples in most cases:
+```
+for i, x in enumerate(xs):
+  pass
+
+x, y = y, x
+
+return x, y
+```
+but not all cases:
+```
+foo = [x, y for x in range(5) for y in range(5)]
+SyntaxError: invalid syntax
+```
+
 ## Inconsistency of set literals
 
 Sets can be initialized via syntax sugar:
