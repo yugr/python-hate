@@ -7,16 +7,15 @@ and others may even be considered to be virtues by some people.
 
 ## Zero static checking
 
-The most critical problem of Python is that it does not perform any static checks
-(not even missing variable definitions).
-Lack of static checking increases debugging time and makes refactoring
-more time-consuming than needed.
+The most critical problem of Python is complete lack of static checking
+(it does not even detect missing variable definitions).
+which increases debugging time and makes refactoring more time-consuming than needed.
 This becomes particularly obvious when you run your app on a huge amount of data overnight,
 just to detect missing initialization in some rarely called function in the morning.
 
 There is [Pylint](https://www.pylint.org) but it is a linter (i.e. style checker)
 rather than a real static analyzer so it is unable, by design, to detect
-many serious errors in programs which require dataflow analysis.
+many serious errors which require dataflow analysis.
 For example if fails on basic stuff like
 * invalid string formatting (fixed [here](https://github.com/PyCQA/pylint/pull/2465))
 * iterating over unsorted dicts (reported [here](https://github.com/PyCQA/pylint/issues/2467) with draft patch, rejected because maintainers consider it unimportant (no particular reasons provided))
@@ -31,7 +30,7 @@ which is suprising at the age of multicores.
 
 ## No type annotations
 
-_Type annotations have finally been introduced in Python 3.5. Google developed a type inferencer [pytype](https://github.com/google/pytype) (it seems to have [serious](https://github.com/google/pytype/issues/581) [limitations](https://github.com/google/pytype/issues/580) so it's unclear whether it's production-ready)._
+_Type annotations have finally been introduced in Python 3.5. Google has even developed a [pytype](https://github.com/google/pytype) type inferencer/checker but it seems to have [serious](https://github.com/google/pytype/issues/581) [limitations](https://github.com/google/pytype/issues/580) so it's unclear whether it's production-ready._
 
 Lack of type annotations forces people to use hungarian notation
 in complex programs (hello 90-s!).
@@ -47,15 +46,16 @@ x == not y
 
 ## Unable to overload logic operators
 
-It's not possible to overload `and`, `or` or `not` (which might have been handy e.g. in `Interval` class).
+It's not possible to overload `and`, `or` or `not` (which might have been handy to represent e.g. operations on set-like or geometric objects).
 There's even a [PEP](https://www.python.org/dev/peps/pep-0335/) which was rejected
 because Guido disliked particular implementation.
 
 ## Hiding type errors via (un)helpful conversions
 
-It's very easy to write `len(lst1) == lst2` instead of `len(lst1) == len(lst2)`.
+It's very easy to make a mistake of writing `len(lst1) == lst2`
+instead of intended `len(lst1) == len(lst2)`.
 Python will (un)helpfully make it harder to find this error
-by converting first variant to `[len(lst1)] * len(lst2) == lst2`
+by silently converting first variant to `[len(lst1)] * len(lst2) == lst2`
 (instead of aborting with a type fail).
 
 ## Limited lambdas
@@ -138,9 +138,9 @@ you should use
 lst.sort(key=lambda n_name_phone: (n_name_phone[1], n_name_phone[2]))
 ```
 
-To make things even better, tuple unpacking does work in Python 2.
+This seems to be intentional decision as tuple unpacking does work in Python 2.
 
-## Inconsistency of set literals
+## Inconsist syntax of set literals
 
 Sets can be initialized via syntax sugar:
 ```
@@ -154,11 +154,6 @@ but it breaks for empty sets:
 >>> type(x)
 <class 'dict'>
 ```
-
-## Syntax checking
-
-Syntax error reporting in Python is extremely primitive.
-In most cases you simply get `SyntaxError: invalid syntax`.
 
 ## Inadvertent sharing
 
@@ -466,6 +461,11 @@ in which program may change execution environment e.g.
 Existing optimizers (e.g. pypy) have to rely on idioms and heuristics.
 
 # Infrastructure
+
+## Syntax checking
+
+Syntax error reporting in Python is extremely primitive.
+In most cases you simply get `SyntaxError: invalid syntax`.
 
 ## Different conventions on OSes
 
