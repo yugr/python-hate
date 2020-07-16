@@ -298,6 +298,20 @@ sep.join(lst)
 lst.split(sep)
 ```
 
+## Builtins do not behave as normal functions
+
+Builtin functions [do not support named arguments](https://stackoverflow.com/a/24463222/2170527)
+e.g.
+```
+>>> x = {1: 2}
+>>> x.get(2, 0)
+0
+>>> x.get(2, default=0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: get() takes no keyword arguments
+```
+
 # Name Resolution
 
 ## No way to localize a name
