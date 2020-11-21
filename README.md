@@ -246,6 +246,20 @@ The lexeme is not needed for parsing and it's only purpose
 [was](http://effbot.org/pyfaq/why-are-colons-required-for-the-if-while-def-class-statements.htm)
 to somehow "enhance readability".
 
+## Unnatural operator priority
+
+Normally all unary operators have higher priority than binary ones but of course not in Python:
+```
+>>> not 'x' in ['x', False]
+False
+>>> (not 'x') in ['x', False]
+True
+>>> not ('x' in ['x', False])
+False
+```
+
+A funny consequence of this is that `x not in lst` and `not x in lst` notations are equivalent.
+
 # Standard Libraries
 
 ## List generators fail check for emptiness
