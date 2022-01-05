@@ -326,6 +326,12 @@ Traceback (most recent call last):
 TypeError: get() takes no keyword arguments
 ```
 
+## Inconsistent naming
+
+`string.strip()` and `list.sort()`, although named similarly (a verb in imperative mood),
+have very different behavior: string's method returns a stripped copy whereas
+list's one sorts object inplace (and returns `None`).
+
 # Name Resolution
 
 ## No way to localize a name
