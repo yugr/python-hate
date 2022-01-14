@@ -332,6 +332,21 @@ TypeError: get() takes no keyword arguments
 have very different behavior: string's method returns a stripped copy whereas
 list's one sorts object inplace (and returns `None`).
 
+## Path concatenation may silently ignore inputs
+
+`Os.path.join` will [silently drop preceding inputs on argument with leading slash](https://stackoverflow.com/questions/1945920/why-doesnt-os-path-join-work-in-this-case):
+```
+>>> print(os.path.join('/home/yugr', '/../libexec'))
+/../libexec
+```
+
+Python docs mentions this behavior:
+> If a component is an absolute path, all previous components are thrown away and joining continues from the absolute path component.
+
+but unfortunately do not provide any reasons for such irrational choice. Throwing exception would be much less error-prone.
+
+Google search for [why os.path.join throws away](https://www.google.com/search?q=why+os.path.join+throws+away+site%3Astackoverflow.com) returns 22K results at the time of this writing...
+
 # Name Resolution
 
 ## No way to localize a name
