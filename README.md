@@ -347,6 +347,20 @@ but unfortunately do not provide any reasons for such irrational choice. Throwin
 
 Google search for [why os.path.join throws away](https://www.google.com/search?q=why+os.path.join+throws+away+site%3Astackoverflow.com) returns 22K results at the time of this writing...
 
+## Different rounding algorithm
+
+Python uses a non-standard banker's rounding algorithm:
+```
+# Python3 (bankers rounding)
+>>> round(0.5)
+0
+>>> round(1.5)
+2
+>>> round(2.5)
+2
+```
+Apart from being counterintuitive, this is also different from most other languages (C, Java, Ruby, etc.).
+
 # Name Resolution
 
 ## No way to localize a name
@@ -556,6 +570,24 @@ if filter(lambda x: x, [0]):
   print("X")  # Executes in 3 but not in 2
 ```
 * order of keys in dictionary is random until Python 3.6
+* different rounding algorithm:
+```
+# Python2.7
+>>> round(0.5)
+1.0
+>>> round(1.5)
+2.0
+>>> round(2.5)
+3.0
+
+# Python3 (bankers rounding)
+>>> round(0.5)
+0
+>>> round(1.5)
+2
+>>> round(2.5)
+2
+```
 
 ## Dependency hell
 
