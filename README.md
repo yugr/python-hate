@@ -8,7 +8,7 @@ and others may even be considered to be virtues by some people.
 ## Zero static checking
 
 The most critical problem of Python is complete lack of static checking
-(it does not even detect missing variable definitions).
+(it does not even detect missing variable definitions)
 which increases debugging time and makes refactoring more time-consuming than needed.
 This becomes particularly obvious when you run your app on a huge amount of data overnight,
 just to detect missing initialization in some rarely called function in the morning.
