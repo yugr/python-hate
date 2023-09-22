@@ -483,8 +483,9 @@ xxx = 1
 def foo():
   if False:
     global xxx
-  return xxx
-print(foo())  # Prints 1
+  xxx = 42
+foo()
+print(xxx)  # Prints 42
 ```
 
 ## Relative imports are unusable
