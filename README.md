@@ -235,7 +235,7 @@ but invalid slicing does not:
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 IndexError: list index out of range
->>> a[4:10]
+>>> a[4:5]
 []
 ```
 
