@@ -200,6 +200,51 @@ breaking your program much later.
 This can be overcome with `__slots__` but when have you seen them
 used last time?
 
+## Hiding class variables in instances
+
+When accessing object attribute via `obj.attr` syntax Python will first search
+for `attr` in `obj`'s instance variables. If it's not present,
+it will search `attr` in class variables of `obj`'s class.
+
+This behavior is reasonable and matches other languages.
+
+Problem is that status of `attr` will change if we write it:
+```
+class A:
+  x = 1
+
+a = A()
+
+# Here self.v means A.v ...
+print(A.x) # 1
+print(a.x) # 1
+
+# ... and here it does not
+a.x = 2
+print(A.x) # 1
+print(a.x) # 2
+```
+
+This leads to this particularly strange and unexpected semantics:
+```
+class A:
+  x = 1
+
+  def __init__(self):
+    self.x += 1
+
+print(A.x)  # 1
+
+a = A()
+print(A.x)  # 1
+print(a.x)  # 2
+```
+To understand what's going on, note that `__init__` is interpreted as
+```
+def __init__(self):
+  self.x = A.x + 1
+```
+
 ## "Is" operator does not work for primitive types
 
 No comments:
