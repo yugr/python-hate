@@ -140,9 +140,9 @@ lst.sort(key=lambda n_name_phone: (n_name_phone[1], n_name_phone[2]))
 
 This seems to be intentional decision as tuple unpacking does work in Python 2.
 
-## Inconsist syntax of set literals
+## Inconsistent syntax of set literals
 
-Sets can be initialized via syntax sugar:
+Sets can be initialized via syntactic sugar:
 ```
 >>> x = {1, 2, 3}
 >>> type(x)
@@ -287,7 +287,7 @@ IndexError: list index out of range
 ## Spurious `:`s
 
 Python got rid of spurious bracing but introduced a spurious `:` lexeme instead.
-The lexeme is not needed for parsing and it's only purpose
+The lexeme is not needed for parsing and its only purpose
 [was](http://effbot.org/pyfaq/why-are-colons-required-for-the-if-while-def-class-statements.htm)
 to somehow "enhance readability".
 
@@ -610,7 +610,7 @@ Some examples
 ```
 print(1/2)  # Prints "0" in 2, "0.5" in 3
 ```
-* checking `filter`ed list for emptyness:
+* checking `filter`ed list for emptiness:
 ```
 if filter(lambda x: x, [0]):
   print("X")  # Executes in 3 but not in 2
