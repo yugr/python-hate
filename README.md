@@ -418,7 +418,7 @@ class E(C, D):
 
 E(arg=1)
 ```
-Otice the especially beautiful `__mro__` checks which I needed to avoid error in `object.__init_`
+Notice the especially beautiful `__mro__` checks which I needed to avoid error in `object.__init_`
 which just so happens to NOT support the kwargs convention
 (see [super() and changing the signature of cooperative methods](https://stackoverflow.com/questions/56714419/super-and-changing-the-signature-of-cooperative-methods)
 for details).
