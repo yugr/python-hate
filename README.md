@@ -305,6 +305,128 @@ False
 
 A funny consequence of this is that `x not in lst` and `not x in lst` notations are equivalent.
 
+## Weird semantics of `super()`
+
+When you call `super().__init__` in your class constructor:
+```
+class B(A):
+  def __init__(self):
+    super(B, self).__init__()
+
+```
+it will NOT necessarily call constructor of superclass (`A` in this case).
+
+Instead it will call a constructor of _some other_ class from class hierarchy
+of `self`s class (if this sounds a bit complicated that's because it actually is).
+
+Let's look at a simple example:
+```
+#   object
+#   /    \
+#  A      B
+#  |      |
+#   C      D
+#   \    /
+#      E
+
+class A(object):
+  def __init__(self):
+    print("A")
+    super().__init__()
+
+class B(object):
+  def __init__(self):
+    print("B")
+    super().__init__()
+
+class C(A):
+  def __init__(self, arg):
+    print(f"C {arg}")
+    super().__init__()
+
+class D(B):
+  def __init__(self, arg):
+    print(f"D {arg}")
+    super().__init__()
+
+class E(C, D):
+  def __init__(self, arg):
+    print(f"E {arg}")
+    super().__init__(arg)
+```
+If we try to construct an instance of `E` we'll get a puzzling error:
+```
+>>> E(10)
+E 1
+C 1
+A
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 4, in __init__
+  File "<stdin>", line 4, in __init__
+  File "<stdin>", line 4, in __init__
+TypeError: __init__() missing 1 required positional argument: 'arg'
+```
+What happens here is that for diamond class hierarchies Python will
+execute constructors in strange unintuitive order
+(called MRO, explained in details [here](https://docs.python.org/3/howto/mro.html)).
+In our case the order happens to be E, C, A, D, B.
+
+As you can see poor `A` suddenly has to call `D` instead of expected `object`.
+`D` requires `arg` of which `A` is of course not aware of, hence the crash.
+So when you call `super()` you have no idea which class you are calling into,
+nor what the expected `__init__` signature is.
+
+When using `super()` ALL your `__init__` methods have to use keyword arguments only
+and pass all of them to the caller:
+```
+class A(object):
+  def __init__(self, **kwargs):
+    print("A")
+    if type(self).__mro__[-2] is A:
+      # Avoid "TypeError: object.__init__() takes no parameters" error
+      super().__init__()
+      return
+    super().__init__(**kwargs)
+
+class B(object):
+  def __init__(self, **kwargs):
+    print("B")
+    if type(self).__mro__[-2] is B:
+      # Avoid "TypeError: object.__init__() takes no parameters" error
+      super().__init__()
+      return
+    super().__init__(**kwargs)
+
+class C(A):
+  def __init__(self, **kwargs):
+    arg = kwargs["arg"]
+    print(f"C {arg}")
+    super().__init__(**kwargs)
+
+class D(B):
+  def __init__(self, **kwargs):
+    arg = kwargs["arg"]
+    print(f"D {arg}")
+    super().__init__(**kwargs)
+
+class E(C, D):
+  def __init__(self, **kwargs):
+    arg = kwargs["arg"]
+    print(f"E {arg}")
+    super().__init__(**kwargs)
+
+E(arg=1)
+```
+Otice the especially beautiful `__mro__` checks which I needed to avoid error in `object.__init_`
+which just so happens to NOT support the kwargs convention
+(see [super() and changing the signature of cooperative methods](https://stackoverflow.com/questions/56714419/super-and-changing-the-signature-of-cooperative-methods)
+for details).
+
+I'll let the reader decide how more readable and efficient this makes your code.
+
+See [Python's Super is nifty, but you can't use it](https://fuhm.net/super-harmful/) for an in-depth discussion.
+
 # Standard Libraries
 
 ## List generators fail check for emptiness
@@ -638,7 +760,7 @@ if filter(lambda x: x, [0]):
 ## Dependency hell
 
 Python community does not seem to have a strong culture of preserving API backwards compatibility
-or following [semver convention](https://semver.org/)
+or following [SemVer convention](https://semver.org/)
 (which is hinted by the fact that there are no widespread tools for checking Python package API
 compatibility). This is not surprising given that even minor versions of Python 3 itself
 break old and popular APIs (e.g. [time.clock](https://bugs.python.org/issue31803)).
@@ -657,3 +779,4 @@ complicates importing module in other applications
 and upgrading dependencies later on to get bugfixes and security patches.
 
 For more details see the excellent ["Dependency hell: a library author's guide" talk](https://www.youtube.com/watch?v=OaBhcueqNqw)
+and an alternative view in [Should You Use Upper Bound Version Constraints?](https://iscinumpy.dev/post/bound-version-constraints/)
