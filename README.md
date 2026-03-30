@@ -456,6 +456,8 @@ Surpisingly enough this does not apply to `range` (i.e. `bool(range(0))` returns
 
 ## Argparse does not support negated flags
 
+_This is supported starting from 3.9 via argparse.BooleanOptionalAction action._
+
 `argparse` does not provide automatic support for `--no-XXX` flags.
 
 ## Argparse has useless default formatter
